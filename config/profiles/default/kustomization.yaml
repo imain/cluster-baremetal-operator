@@ -1,3 +1,5 @@
+namespace: openshift-machine-api
+namePrefix: cluster-baremetal-
 commonAnnotations:
   include.release.openshift.io/self-managed-high-availability: "true"
 
@@ -6,13 +8,13 @@ bases:
 - ../../rbac
 - ../../cluster-baremetal-operator
 # [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix including the one in crd/kustomization.yaml
-#- ../../webhook
+- ../../webhook
 # [CERTMANAGER] To enable cert-manager, uncomment all sections with 'CERTMANAGER'. 'WEBHOOK' components are required.
 #- ../../certmanager
 # [PROMETHEUS] To enable prometheus monitor, uncomment all sections with 'PROMETHEUS'.
 #- ../../prometheus
 
-#patchesStrategicMerge:
+patchesStrategicMerge:
   # Protect the /metrics endpoint by putting it behind auth.
   # Only one of manager_auth_proxy_patch.yaml and
   # manager_prometheus_metrics_patch.yaml should be enabled.
@@ -25,7 +27,7 @@ bases:
 #- manager_prometheus_metrics_patch.yaml
 
 # [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix including the one in crd/kustomization.yaml
-#- manager_webhook_patch.yaml
+- manager_webhook_patch.yaml
 
 # [CERTMANAGER] To enable cert-manager, uncomment all sections with 'CERTMANAGER'.
 # Uncomment 'CERTMANAGER' sections in crd/kustomization.yaml to enable the CA injection in the admission webhooks.

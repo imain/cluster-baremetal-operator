@@ -1,0 +1,25 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  annotations:
+    include.release.openshift.io/self-managed-high-availability: "true"
+  name: cluster-baremetal-validating-webhook-configuration
+webhooks:
+- clientConfig:
+    caBundle: Cg==
+    service:
+      name: cluster-baremetal-webhook-service
+      namespace: openshift-machine-api
+      path: /validate-metal-io-v1alpha1-provisioning
+  failurePolicy: Fail
+  name: vprovisioning.kb.io
+  rules:
+  - apiGroups:
+    - metal.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - provisionings

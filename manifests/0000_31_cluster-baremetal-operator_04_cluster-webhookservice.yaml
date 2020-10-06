@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    include.release.openshift.io/self-managed-high-availability: "true"
+  name: cluster-baremetal-webhook-service
+  namespace: openshift-machine-api
+spec:
+  ports:
+  - port: 443
+    targetPort: 9443
+  selector:
+    k8s-app: cluster-baremetal-operator

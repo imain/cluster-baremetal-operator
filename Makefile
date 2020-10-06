@@ -59,10 +59,12 @@ RBAC_LIST = rbac.authorization.k8s.io_v1_role_cluster-baremetal-operator.yaml \
 .PHONY: manifests
 manifests: generate
 	$(KUSTOMIZE) build config/profiles/$(MANIFEST_PROFILE) -o $(TMP_DIR)/
-	ls $(TMP_DIR)
+
 	# now rename/join the output files into the files we expect
 	mv $(TMP_DIR)/apiextensions.k8s.io_v1_customresourcedefinition_provisionings.metal3.io.yaml manifests/0000_31_cluster-baremetal-operator_02_metal3provisioning.crd.yaml
 	mv $(TMP_DIR)/apps_v1_deployment_cluster-baremetal-operator.yaml manifests/0000_31_cluster-baremetal-operator_06_deployment.yaml
+	mv $(TMP_DIR)/v1_service_cluster-baremetal-webhook-service.yaml manifests/0000_31_cluster-baremetal-operator_04_cluster-webhookservice.yaml
+	mv $(TMP_DIR)/admissionregistration.k8s.io_v1beta1_validatingwebhookconfiguration_cluster-baremetal-validating-webhook-configuration.yaml manifests/0000_31_cluster-baremetal-operator_04_validatingwebhook.yaml
 	rm -f manifests/0000_31_cluster-baremetal-operator_05_rbac.yaml
 	for rbac in $(RBAC_LIST) ; do \
 	cat $(TMP_DIR)/$${rbac} >> manifests/0000_31_cluster-baremetal-operator_05_rbac.yaml ;\
@@ -87,7 +89,7 @@ vet: lint
 .PHONY: generate
 generate:
 	go generate -x ./...
-	$(CONTROLLER_GEN) $(CRD_OPTIONS) rbac:roleName=cluster-baremetal-operator webhook paths=./... output:crd:artifacts:config=config/crd/bases
+	$(CONTROLLER_GEN) $(CRD_OPTIONS) rbac:roleName=operator webhook paths=./... output:crd:artifacts:config=config/crd/bases
 	sed -i '/^    controller-gen.kubebuilder.io\/version: (devel)/d' config/crd/bases/*
 	$(CONTROLLER_GEN) object:headerFile=./hack/boilerplate.go.txt paths="./..."
 	$(GOLANGCI_LINT) run --fix

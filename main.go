@@ -29,6 +29,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
+	metaliov1alpha1 "github.com/openshift/cluster-baremetal-operator/api/v1alpha1"
 	// +kubebuilder:scaffold:imports
 
 	osconfigv1 "github.com/openshift/api/config/v1"
@@ -93,6 +94,7 @@ func main() {
 		MetricsBindAddress: metricsAddr,
 		LeaderElection:     enableLeaderElection,
 		Port:               9443,
+		CertDir:            "/etc/cluster-baremetal-operator/tls",
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
@@ -115,6 +117,10 @@ func main() {
 		ImagesFilename: imagesJSONFilename,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Provisioning")
+		os.Exit(1)
+	}
+	if err = (&metaliov1alpha1.Provisioning{}).SetupWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "Provisioning")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder

@@ -35,11 +35,18 @@ spec:
           value: "8080"
         image: registry.svc.ci.openshift.org/openshift:cluster-baremetal-operator
         name: cluster-baremetal-operator
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
         resources:
           requests:
             cpu: 10m
             memory: 50Mi
         volumeMounts:
+        - mountPath: /etc/cluster-baremetal-operator/tls
+          name: cert
+          readOnly: true
         - mountPath: /etc/cluster-baremetal-operator/images
           name: images
           readOnly: true
@@ -64,6 +71,10 @@ spec:
         operator: Exists
         tolerationSeconds: 120
       volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: machine-api-operator-webhook-cert
       - configMap:
           name: cluster-baremetal-operator-images
         name: images
