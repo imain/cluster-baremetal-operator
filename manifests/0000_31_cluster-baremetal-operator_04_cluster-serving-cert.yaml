@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  annotations:
+    include.release.openshift.io/self-managed-high-availability: "true"
+  name: cluster-baremetal-serving-cert
+  namespace: openshift-machine-api
+spec:
+  dnsNames:
+  - cluster-baremetal-webhook-service.openshift-machine-api.svc
+  - cluster-baremetal-webhook-service.openshift-machine-api.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: cluster-baremetal-selfsigned-issuer
+  secretName: cluster-baremetal-webhook-server-cert

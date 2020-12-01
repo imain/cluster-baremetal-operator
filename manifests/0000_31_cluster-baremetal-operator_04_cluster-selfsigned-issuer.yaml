@@ -1,0 +1,9 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  annotations:
+    include.release.openshift.io/self-managed-high-availability: "true"
+  name: cluster-baremetal-selfsigned-issuer
+  namespace: openshift-machine-api
+spec:
+  selfSigned: {}

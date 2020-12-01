@@ -74,7 +74,7 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: machine-api-operator-webhook-cert
+          secretName: cluster-baremetal-webhook-server-cert
       - configMap:
           name: cluster-baremetal-operator-images
         name: images

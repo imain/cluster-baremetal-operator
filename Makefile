@@ -62,14 +62,16 @@ manifests: generate
 
 	# now rename/join the output files into the files we expect
 	mv $(TMP_DIR)/apiextensions.k8s.io_v1_customresourcedefinition_provisionings.metal3.io.yaml manifests/0000_31_cluster-baremetal-operator_02_metal3provisioning.crd.yaml
-	mv $(TMP_DIR)/apps_v1_deployment_cluster-baremetal-operator.yaml manifests/0000_31_cluster-baremetal-operator_06_deployment.yaml
 	mv $(TMP_DIR)/v1_service_cluster-baremetal-webhook-service.yaml manifests/0000_31_cluster-baremetal-operator_04_cluster-webhookservice.yaml
 	mv $(TMP_DIR)/admissionregistration.k8s.io_v1beta1_validatingwebhookconfiguration_cluster-baremetal-validating-webhook-configuration.yaml manifests/0000_31_cluster-baremetal-operator_04_validatingwebhook.yaml
+	mv $(TMP_DIR)/cert-manager.io_v1alpha2_certificate_cluster-baremetal-serving-cert.yaml manifests/0000_31_cluster-baremetal-operator_04_cluster-serving-cert.yaml
+	mv $(TMP_DIR)/cert-manager.io_v1alpha2_issuer_cluster-baremetal-selfsigned-issuer.yaml manifests/0000_31_cluster-baremetal-operator_04_cluster-selfsigned-issuer.yaml
 	rm -f manifests/0000_31_cluster-baremetal-operator_05_rbac.yaml
 	for rbac in $(RBAC_LIST) ; do \
 	cat $(TMP_DIR)/$${rbac} >> manifests/0000_31_cluster-baremetal-operator_05_rbac.yaml ;\
 	echo '---' >> manifests/0000_31_cluster-baremetal-operator_05_rbac.yaml ;\
 	done
+	mv $(TMP_DIR)/apps_v1_deployment_cluster-baremetal-operator.yaml manifests/0000_31_cluster-baremetal-operator_06_deployment.yaml
 	rm -rf $(TMP_DIR)
 
 # Run go fmt against code
