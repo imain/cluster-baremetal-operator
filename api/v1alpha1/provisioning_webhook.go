@@ -37,7 +37,7 @@ func (r *Provisioning) SetupWebhookWithManager(mgr ctrl.Manager) error {
 
 // see https://book.kubebuilder.io/cronjob-tutorial/webhook-implementation.html
 
-// +kubebuilder:webhook:verbs=create;update,path=/validate-metal-io-v1alpha1-provisioning,mutating=false,failurePolicy=fail,groups=metal.io,resources=provisionings,versions=v1alpha1,name=vprovisioning.kb.io
+// +kubebuilder:webhook:verbs=create;update,path=/validate-metal3-io-v1alpha1-provisioning,mutating=false,failurePolicy=fail,groups=metal3.io,resources=provisionings,versions=v1alpha1,name=vprovisioning.kb.io
 
 var _ webhook.Validator = &Provisioning{}
 

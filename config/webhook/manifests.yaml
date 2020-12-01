@@ -11,12 +11,12 @@ webhooks:
     service:
       name: webhook-service
       namespace: system
-      path: /validate-metal-io-v1alpha1-provisioning
+      path: /validate-metal3-io-v1alpha1-provisioning
   failurePolicy: Fail
   name: vprovisioning.kb.io
   rules:
   - apiGroups:
-    - metal.io
+    - metal3.io
     apiVersions:
     - v1alpha1
     operations:
